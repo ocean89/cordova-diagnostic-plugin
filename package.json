@@ -1,5 +1,5 @@
 {
-    "version": "1.0,
+    "version": "1.0",
     "name": "cordova.plugins.diagnostic-location",
     "cordova_name": "Diagnostic location",
     "description": "Cordova/Phonegap plugin to check the state of Location. Fork of original cordova.plugins.diagnostic",
