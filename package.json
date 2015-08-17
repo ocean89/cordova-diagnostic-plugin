@@ -1,6 +1,6 @@
 {
     "version": "1.2.1",
-    "name": "cordova.plugins.diagnostic-location",
+    "name": "cordova.plugins.diagnosticLocation",
     "cordova_name": "Diagnostic location",
     "description": "Cordova/Phonegap plugin to check the state of Location. Fork of original cordova.plugins.diagnostic",
     "repository": {
@@ -8,7 +8,7 @@
         "url": "https://github.com/ocean89/cordova-diagnostic-plugin"
     },
     "cordova": {
-        "id": "cordova.plugins.diagnostic-location"
+        "id": "cordova.plugins.diagnostic"
     },
     "issue": "https://github.com/ocean89/cordova-diagnostic-plugin/issues",
     "keywords": [
