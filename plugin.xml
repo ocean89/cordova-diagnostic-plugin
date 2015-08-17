@@ -23,7 +23,6 @@
         <source-file src="src/ios/Diagnostic.m" />
 
         <framework src="CoreLocation.framework" />
-        <framework src="CoreBluetooth.framework" />
     </platform>
 
     <!-- android -->
@@ -41,8 +40,6 @@
         <config-file target="AndroidManifest.xml" parent="/manifest">
             <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
             <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-            <uses-permission android:name="android.permission.BLUETOOTH" />
         </config-file>
 
         <source-file src="src/android/Diagnostic.java" target-dir="src/cordova/plugins" />
