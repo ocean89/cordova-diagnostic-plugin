@@ -29,7 +29,6 @@ package cordova.plugins;
         import org.json.JSONException;
         import org.json.JSONObject;
 
-        import android.bluetooth.BluetoothAdapter;
         import android.util.Log;
 
         import android.content.BroadcastReceiver;
@@ -40,7 +39,6 @@ package cordova.plugins;
         import android.provider.Settings;
         import android.location.LocationManager;
         import android.location.LocationListener;
-        import android.net.wifi.WifiManager;
 
 public class Diagnostic extends CordovaPlugin {
     public static final String TAG = "Diagnostic";
@@ -79,20 +77,8 @@ public class Diagnostic extends CordovaPlugin {
         } else if (action.equals("switchToMobileDataSettings")){
             switchToMobileDataSettings();
             callbackContext.success();
-        } else if (action.equals("switchToBluetoothSettings")){
-            switchToBluetoothSettings();
-            callbackContext.success();
-        } else if (action.equals("switchToWifiSettings")){
-            switchToWifiSettings();
-            callbackContext.success();
         } else if(action.equals("isLocationEnabled") || action.equals("isLocationAuthorized") || action.equals("isLocationEnabledSetting")) {
             callbackContext.success(isGpsEnabled() ? 1 : 0);
-        } else if(action.equals("isWifiEnabled")) {
-            callbackContext.success(isWifiEnabled() ? 1 : 0);
-        } else if(action.equals("isCameraEnabled")) {
-            callbackContext.success(isCameraEnabled() ? 1 : 0);
-        } else if(action.equals("isBluetoothEnabled")) {
-            callbackContext.success(isBluetoothEnabled() ? 1 : 0);
         }
         else {
             return false;
@@ -117,24 +103,6 @@ public class Diagnostic extends CordovaPlugin {
         return result;
     }
 
-    public boolean isWifiEnabled() {
-        WifiManager wifiManager = (WifiManager) this.cordova.getActivity().getSystemService(Context.WIFI_SERVICE);
-        boolean result = wifiManager.isWifiEnabled();
-        return result;
-    }
-
-    public boolean isCameraEnabled() {
-        PackageManager pm = this.cordova.getActivity().getPackageManager();
-        boolean result = pm.hasSystemFeature(PackageManager.FEATURE_CAMERA);
-        return result;
-    }
-
-    public boolean isBluetoothEnabled() {
-        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        boolean result = mBluetoothAdapter != null && mBluetoothAdapter.isEnabled();
-        return result;
-    }
-
     private boolean isLocationProviderEnabled(String provider) {
         LocationManager locationManager = (LocationManager) this.cordova.getActivity().getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(provider);
@@ -149,18 +117,6 @@ public class Diagnostic extends CordovaPlugin {
     public void switchToMobileDataSettings() {
         Log.d(TAG, "Switch to Mobile Data Settings");
         Intent settingsIntent = new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
-        cordova.getActivity().startActivity(settingsIntent);
-    }
-
-    public void switchToBluetoothSettings() {
-        Log.d(TAG, "Switch to Bluetooth Settings");
-        Intent settingsIntent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
-        cordova.getActivity().startActivity(settingsIntent);
-    }
-
-    public void switchToWifiSettings() {
-        Log.d(TAG, "Switch to Wifi Settings");
-        Intent settingsIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
         cordova.getActivity().startActivity(settingsIntent);
     }
 

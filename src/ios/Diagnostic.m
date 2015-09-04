@@ -18,15 +18,10 @@
 
 - (void)pluginInitialize {
     
-    NSLog(@"RFduino Cordova Plugin");
+    NSLog(@"Diagnostic Cordova Plugin");
     NSLog(@"(c)2013-2015 Don Coleman");
     
     [super pluginInitialize];
-    
-    self.bluetoothManager = [[CBCentralManager alloc]
-                             initWithDelegate:self
-                             queue:dispatch_get_main_queue()
-                             options:@{CBCentralManagerOptionShowPowerAlertKey: @(NO)}];
 }
 
 - (void) isLocationEnabled: (CDVInvokedUrlCommand*)command
@@ -113,126 +108,5 @@
     }
 
 }
-
-
-- (void) isWifiEnabled: (CDVInvokedUrlCommand*)command
-{
-    NSLog(@"Loading WiFi status...");
-    CDVPluginResult* pluginResult;
-    if([self connectedToWifi]) {
-        
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:1];
-        
-    } else {
-        
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:0];
-    
-    }
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-
-}
-
-- (BOOL) connectedToWifi  // Don't work on iOS Simulator, only in the device
-{    
-    struct ifaddrs *addresses;
-    struct ifaddrs *cursor;
-    BOOL wiFiAvailable = NO;
-    
-    if (getifaddrs(&addresses) != 0) {
-        return NO;
-    }
-    
-    cursor = addresses;
-    
-    while (cursor != NULL)  {
-        if (cursor -> ifa_addr -> sa_family == AF_INET && !(cursor -> ifa_flags & IFF_LOOPBACK)) // Ignore the loopback address
-        {
-            // Check for WiFi adapter
-            
-            if (strcmp(cursor -> ifa_name, "en0") == 0) {
-                
-                NSLog(@"Wifi ON");
-                wiFiAvailable = YES;
-                break;
-                
-            }
-            
-        }
-        
-        cursor = cursor -> ifa_next;
-    }
-    
-    freeifaddrs(addresses);
-    return wiFiAvailable;
-}
-
-- (void) isCameraEnabled: (CDVInvokedUrlCommand*)command
-{
-    NSLog(@"Loading camera status...");
-    CDVPluginResult* pluginResult;
-    if([self isCameraEnabled]) {
-        
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:1];
-        
-    }
-    else {
-        
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:0];
-        
-    }
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    
-}
-
-
-- (BOOL) isCameraEnabled
-{
-
-    BOOL cameraAvailable = 
-    [UIImagePickerController 
-     isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
-    if(cameraAvailable) {
-        NSLog(@"Camera enabled");
-        return true;
-    }
-    else {
-        NSLog(@"Camera disabled");
-        return false;
-    }
-
-}
-
-- (void) isBluetoothEnabled: (CDVInvokedUrlCommand*)command
-{
-    CDVPluginResult* pluginResult;
-    if(self.bluetoothEnabled) {
-        
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:1];
-        
-    } else {
-        
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:0];
-        
-    }
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    
-}
-
-
-#pragma mark - CBCentralManagerDelegate
-
-- (void) centralManagerDidUpdateState:(CBCentralManager *)central {
-    
-    if ([central state] == CBCentralManagerStatePoweredOn) {
-        NSLog(@"Bluetooth enabled");
-        self.bluetoothEnabled = true;
-    }
-    else {
-        NSLog(@"Bluetooth disabled or unavailable");
-        self.bluetoothEnabled = false;
-    }
-}
-
-
 
 @end
